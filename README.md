@@ -56,6 +56,17 @@ committed) or as real environment variables / container `-e` flags. No
 secret value is committed anywhere in this repository, and no secret is
 baked into the Docker image.
 
+## Live deployment
+
+Base URL (Render): https://gridwise-api-papersense.onrender.com
+
+```bash
+curl https://gridwise-api-papersense.onrender.com/health
+# {"status":"ok"}
+
+GRIDWISE_BASE_URL=https://gridwise-api-papersense.onrender.com python test_pipeline.py
+```
+
 ## Endpoints
 
 ### `GET /health`
@@ -136,7 +147,15 @@ Expected output ends with `10/10 sample cases passed.` and exit code 0.
 
 ## Docker
 
-Build:
+Fallback image (Docker Hub): `sajimrz/gridwise-preli:latest`
+
+```bash
+docker pull sajimrz/gridwise-preli:latest
+docker run --rm -p 8000:8000 -e GROQ_API_KEY=your_groq_api_key_here sajimrz/gridwise-preli:latest
+curl http://127.0.0.1:8000/health
+```
+
+Or build from source. Build:
 
 ```bash
 docker build -t gridwise-api .
